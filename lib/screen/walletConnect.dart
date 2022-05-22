@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:testing_app/screen/account.dart';
 
@@ -19,15 +20,17 @@ class _WalletConnectScreenState extends State<WalletConnectScreen> {
   final TextEditingController _controllerCoinAddress = TextEditingController();
   bool isShowQr = false;
   GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-
-  String? batteryPercentage;
   QRViewController? qrViewController;
-  // static const walletChannel = MethodChannel('hendychristian.com/walletConnect');
+
+  // Get battery level.
+  String _batteryLevel = 'battery level.';
+  static const platform = MethodChannel('samples.flutter.dev/battery');
+  
 
 @override
 void initState(){
   super.initState();  
-  // _getBatteryLevel();
+  _getBatteryLevel();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~ TESTING METHOD CHANNEL ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,6 +65,19 @@ Future<void> _getDocuments() async {
   }
   */
   
+  Future<void> _getBatteryLevel() async {
+    String batteryLevel;
+    try {
+      final int result = await platform.invokeMethod('getBatteryLevel');
+      batteryLevel = 'Battery level at $result %';
+    } on PlatformException catch (e) {
+      batteryLevel = "Failed to get battery level: '${e.message}'.";
+    }
+
+    setState(() {
+      _batteryLevel = batteryLevel;
+    });
+  }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~ TESTING METHOD CHANNEL ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
@@ -228,7 +244,7 @@ Future<void> _getDocuments() async {
                                             height: 25,
                                           ),
                                   
-                                        Text('Battery Level : $batteryPercentage'),         
+                                        Text('$_batteryLevel'),         
                                       ],
                                     ),
                                   ),
