@@ -81,6 +81,173 @@ Future<void> _getDocuments() async {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~ TESTING METHOD CHANNEL ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
+  sessionProposal(){
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(20.0)), //this right here
+            child: Container(
+              height: 200,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'What do you want to remember?'),
+                    ),
+                    SizedBox(
+                      width: 320.0,
+                      child: RaisedButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Save",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        color: const Color(0xFF1BC0C5),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  Widget judul(String textJudul){
+    return Text(
+                '$textJudul',
+                style: TextStyle(
+                          fontSize: 18.0,
+                          fontFamily: 'Roboto',
+                          color: Color(0xFF212121),
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: -1.0, 
+                        ),
+            );
+  }
+
+  Widget subJudul(String textSubjudul){
+    return Text(
+          '$textSubjudul', 
+          style:TextStyle(
+                        letterSpacing: -1.0, 
+                    ),
+        );
+  }
+
+  Widget divider(){
+    return  Container(
+          color: Colors.black,
+          height: 1.5,
+          width: MediaQuery.of(context).size.width,
+          );
+  }
+
+  Widget alert(BuildContext context)  {
+    return AlertDialog(
+    title: Center(
+            child: Text(
+                    "Session Proposal"
+                    )
+           ),
+    content:  Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        
+
+        Container(
+          color: Colors.cyan,
+          height: 70,
+          
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+      
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: Image(image: AssetImage('assets/ethImage.png'),)
+                ),
+      
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  padding: EdgeInsets.only(top: 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                          
+                      Text(
+                        "React App",
+                        style:  TextStyle(
+                                fontSize: 18.0,
+                                fontFamily: 'Roboto',
+                                color: Color(0xFF212121),
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: -1.0, 
+                              ),
+                        ),
+                          
+                      Flexible(
+                        child: Container(
+                          padding:  EdgeInsets.only(right: 13.0),
+                          child: Text(
+                                  'https://react-app.walletconnect.com/',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      letterSpacing: -1.0, 
+                                  ),
+                            ),
+                        ), 
+                      ),
+                            
+                    ],
+                  ),
+                ),  
+      
+            ],
+          ),
+        ),
+
+        divider(),
+        SizedBox(height: 20),
+         judul('Blockchains(s)'),
+         subJudul('Ethereum Kovan'),
+        SizedBox(height: 20),
+
+        divider(),
+        SizedBox(height: 20),
+         judul('Relay Protocol'),
+         subJudul('waku'),
+        SizedBox(height: 20),
+
+        divider(),
+        SizedBox(height: 20),
+         judul('Methods'),
+         subJudul('eth_sendTransaction,eth_signTransaction,eth_sign,personal_sign, eth_signTypedData'),
+        SizedBox(height: 20),
+
+      ],
+
+    ),
+    actions: [
+      TextButton(
+          child: Text("OK"),
+          onPressed: () { Navigator.pop(context); },
+        ),
+    ],
+  );
+  }
+
   Widget buildQrView(BuildContext context) => QRView(
      key: qrKey,
 
@@ -88,6 +255,23 @@ Future<void> _getDocuments() async {
        this.qrViewController = qrViewController;
        qrViewController.scannedDataStream.listen((val) { 
          print('Hendie - ${val.code}');
+
+          if(val.code != "" || val.code != null){
+              qrViewController.stopCamera();
+             
+               showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return alert(context);
+                  },
+                );
+        
+             setState(() {
+                 isShowQr = false;
+              });
+
+          }
+
        });
      },
 
@@ -238,11 +422,11 @@ Future<void> _getDocuments() async {
                                             height: 25,
                                           ),
                                   
-                                        buttonScanShow('Test Method Channel'),
+                                        // buttonScanShow('Test Method Channel'),
                                   
-                                          SizedBox(
-                                            height: 25,
-                                          ),
+                                          // SizedBox(
+                                          //   height: 25,
+                                          // ),
                                   
                                         Text('$_batteryLevel'),         
                                       ],
