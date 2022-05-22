@@ -201,16 +201,16 @@ Future<void> _getDocuments() async {
                                       children: [
                                   
                                   
-                                          Container(
-                                            width: 150,
-                                            height: 200,
-                                            child: (isShowQr == true) ?  buildQrView(context) :    
-                                                Image(
-                                                  image: AssetImage('assets/barcode.png'),
-                                                  width: 150,
-                                                ),
-                                            // child: buildQrView(context),
+                                      Container(
+                                        width: 150,
+                                        height: 200,
+                                        child: (isShowQr == true) ?  buildQrView(context) :    
+                                            Image(
+                                              image: AssetImage('assets/barcode.png'),
+                                              width: 150,
                                             ),
+                                        // child: buildQrView(context),
+                                        ),
                                                 
                                         SizedBox(
                                             height: 25,
@@ -228,9 +228,7 @@ Future<void> _getDocuments() async {
                                             height: 25,
                                           ),
                                   
-                                  
-                                        Text('Battery Level : $batteryPercentage'),
-                                                
+                                        Text('Battery Level : $batteryPercentage'),         
                                       ],
                                     ),
                                   ),
