@@ -83,122 +83,124 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Connect Wallet"),
-      ),
+      // appBar: AppBar(
+      //   title: Text("Connect Wallet"),
+      // ),
 
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-      
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-
-                    const GradientText(
-                    'Accounts',
-                    style: TextStyle(
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.bold,
-                                letterSpacing: -2.0, 
-                            ),
-                    gradient: LinearGradient(colors: [
-                      Color.fromARGB(255, 122, 74, 220),
-                      Color(0xff0956ef),
-                      Color.fromARGB(255, 41, 108, 243),
-                    ]),
-                  ),
-
-                    DecoratedBox(
-                        decoration: const ShapeDecoration(
-                          color:Color.fromARGB(255, 226, 226, 226),
-                          shape:  RoundedRectangleBorder(
-                            side:  BorderSide(width: 2.0, style: BorderStyle.solid, color:Color.fromARGB(255, 194, 194, 194),),
-                            borderRadius:  BorderRadius.all(Radius.circular(15.0)),
-                          ),
-                        ),
-                    
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: DropdownButton<String>(
-                            value: dropdownValue,
-                            icon: const Icon(Icons.keyboard_arrow_down_outlined, color: Colors.white,),
-                            elevation: 16,
-                            style: const TextStyle(color: Colors.black),
-                            borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                                      
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                dropdownValue = newValue!;
-                              });
-                            },
-                            items: <String>['Account 1', 'Account 2'].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                onTap: (){
-                                  setState(() {
-                                     dropdownValue = value;
-                                     debugPrint('hendie - dropdownValue : $dropdownValue');
-                                  });
-                                 
-                                },
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                      ),
-                    ),
-
-              ],
-            
-            ),
-
-            const SizedBox(
-              height: 15,
-            ),
-
-            Container(
-              color: Color.fromARGB(255, 165, 165, 165),
-              height: 1,
-              width: MediaQuery.of(context).size.width * 0.9,
-            ),
-
-             SizedBox(
-              height: 30,
-            ),
-
-             Text(
-              'Mainnets',
-              style: TextStyle(
-                color: Colors.black,
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: -2.0, 
-                      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
         
-            ),
-
-            Expanded(
-              child: ListView.builder(
-                itemCount: (dropdownValue == "Account 1") ? list1.length : list2.length,
-                itemBuilder: (context, index){
-                  final item = (dropdownValue == "Account 1") ? list1[index] : list2[index];
-                  return ListContainer(
-                    coinSubName: item.coinName,
-                    coinSubAddress: item.coinAddress,
-                    coinSubImage: item.coinImage,
-                    warna: colors[index],
-                    onSetState: refresh,
-                    iconButton: myIconButton(),
-                  );
-                }
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+      
+                      const GradientText(
+                      'Accounts',
+                      style: TextStyle(
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
+                                  letterSpacing: -2.0, 
+                              ),
+                      gradient: LinearGradient(colors: [
+                        Color.fromARGB(255, 122, 74, 220),
+                        Color(0xff0956ef),
+                        Color.fromARGB(255, 41, 108, 243),
+                      ]),
+                    ),
+      
+                      DecoratedBox(
+                          decoration: const ShapeDecoration(
+                            color:Color.fromARGB(255, 226, 226, 226),
+                            shape:  RoundedRectangleBorder(
+                              side:  BorderSide(width: 2.0, style: BorderStyle.solid, color:Color.fromARGB(255, 194, 194, 194),),
+                              borderRadius:  BorderRadius.all(Radius.circular(15.0)),
+                            ),
+                          ),
+                      
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: DropdownButton<String>(
+                              value: dropdownValue,
+                              icon: const Icon(Icons.keyboard_arrow_down_outlined, color: Colors.white,),
+                              elevation: 16,
+                              style: const TextStyle(color: Colors.black),
+                              borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                                        
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  dropdownValue = newValue!;
+                                });
+                              },
+                              items: <String>['Account 1', 'Account 2'].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  onTap: (){
+                                    setState(() {
+                                       dropdownValue = value;
+                                       debugPrint('hendie - dropdownValue : $dropdownValue');
+                                    });
+                                   
+                                  },
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                        ),
+                      ),
+      
+                ],
+              
               ),
-            ),
-
-          ],
+      
+              const SizedBox(
+                height: 15,
+              ),
+      
+              Container(
+                color: Color.fromARGB(255, 165, 165, 165),
+                height: 1,
+                width: MediaQuery.of(context).size.width * 0.9,
+              ),
+      
+               SizedBox(
+                height: 30,
+              ),
+      
+               Text(
+                'Mainnets',
+                style: TextStyle(
+                  color: Colors.black,
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -2.0, 
+                        ),
+          
+              ),
+      
+              Expanded(
+                child: ListView.builder(
+                  itemCount: (dropdownValue == "Account 1") ? list1.length : list2.length,
+                  itemBuilder: (context, index){
+                    final item = (dropdownValue == "Account 1") ? list1[index] : list2[index];
+                    return ListContainer(
+                      coinSubName: item.coinName,
+                      coinSubAddress: item.coinAddress,
+                      coinSubImage: item.coinImage,
+                      warna: colors[index],
+                      onSetState: refresh,
+                      iconButton: myIconButton(),
+                    );
+                  }
+                ),
+              ),
+      
+            ],
+          ),
         ),
       ),
     
