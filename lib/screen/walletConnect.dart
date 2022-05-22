@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_final_fields
 
 import 'dart:io';
 
@@ -21,6 +21,7 @@ class _WalletConnectScreenState extends State<WalletConnectScreen> {
   bool isShowQr = false;
   GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? qrViewController;
+  bool checkedValue = false;
 
   // Get battery level.
   String _batteryLevel = 'battery level.';
@@ -87,8 +88,7 @@ Future<void> _getDocuments() async {
         builder: (BuildContext context) {
           return Dialog(
             shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(20.0)), //this right here
+                borderRadius: BorderRadius.circular(20.0)), //this right here
             child: Container(
               height: 200,
               child: Padding(
@@ -121,36 +121,7 @@ Future<void> _getDocuments() async {
         });
   }
 
-  Widget judul(String textJudul){
-    return Text(
-                '$textJudul',
-                style: TextStyle(
-                          fontSize: 18.0,
-                          fontFamily: 'Roboto',
-                          color: Color(0xFF212121),
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: -1.0, 
-                        ),
-            );
-  }
-
-  Widget subJudul(String textSubjudul){
-    return Text(
-          '$textSubjudul', 
-          style:TextStyle(
-                        letterSpacing: -1.0, 
-                    ),
-        );
-  }
-
-  Widget divider(){
-    return  Container(
-          color: Colors.black,
-          height: 1.5,
-          width: MediaQuery.of(context).size.width,
-          );
-  }
-
+/*
   Widget alert(BuildContext context)  {
     return AlertDialog(
     title: Center(
@@ -158,6 +129,7 @@ Future<void> _getDocuments() async {
                     "Session Proposal"
                     )
            ),
+   
     content:  Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,18 +156,8 @@ Future<void> _getDocuments() async {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                          
-                      Text(
-                        "React App",
-                        style:  TextStyle(
-                                fontSize: 18.0,
-                                fontFamily: 'Roboto',
-                                color: Color(0xFF212121),
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: -1.0, 
-                              ),
-                        ),
-                          
+                    
+                     judul("React App"),         
                       Flexible(
                         child: Container(
                           padding:  EdgeInsets.only(right: 13.0),
@@ -236,9 +198,28 @@ Future<void> _getDocuments() async {
          subJudul('eth_sendTransaction,eth_signTransaction,eth_sign,personal_sign, eth_signTypedData'),
         SizedBox(height: 20),
 
+        divider(),
+        SizedBox(height: 20),
+         judul('Select Ethereum Kovan Accounts'),
+        SizedBox(height: 20),
+
+          CheckboxListTile(
+            title: Text("title text"),
+            value: checkedValue,
+            onChanged: (bool? value) {
+                          setState(() {
+                            checkedValue = value!;
+                          });
+                          },
+            controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+            activeColor: Colors.green,
+            checkColor: Colors.red,
+          )
+
       ],
 
     ),
+    
     actions: [
       TextButton(
           child: Text("OK"),
@@ -247,6 +228,17 @@ Future<void> _getDocuments() async {
     ],
   );
   }
+  */
+
+  showConfirmationDialog(BuildContext context) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return CustomDialog();
+      },
+    );
+   }
 
   Widget buildQrView(BuildContext context) => QRView(
      key: qrKey,
@@ -256,22 +248,16 @@ Future<void> _getDocuments() async {
        qrViewController.scannedDataStream.listen((val) { 
          print('Hendie - ${val.code}');
 
+          // Kalau codenya kebaca dan ada value maka munculkan dialog
           if(val.code != "" || val.code != null){
               qrViewController.stopCamera();
              
-               showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return alert(context);
-                  },
-                );
-        
-             setState(() {
-                 isShowQr = false;
+              setState(() {
+                isShowQr = false;
               });
-
+        
+             showConfirmationDialog(context);
           }
-
        });
      },
 
@@ -310,20 +296,13 @@ Future<void> _getDocuments() async {
                 child: ElevatedButton(
                   onPressed: () {
                                  setState(() {
-                                  if(text == 'Scan QR Code'){
                                       if(isShowQr == false){
                                           isShowQr = true;
                                       }else{
                                           isShowQr = false;
                                       }
-                                   }else{
-                                     // hendie - disini
-                                    //  getBatteryLevel();
-                                    //  _getDocuments();
-                                   }
-                               
+
                                 });
-                            
                               },
                   style: ElevatedButton.styleFrom(primary: Colors.transparent, shadowColor: Colors.transparent),
                   child: Text('$text'),
@@ -372,7 +351,7 @@ Future<void> _getDocuments() async {
                       Container(
                       color: Color.fromARGB(255, 165, 165, 165),
                       height: 1,
-                      width: MediaQuery.of(context).size.width * 0.9,
+                      width: MediaQuery.of(context).size.width * 0.915,
                     ),
                       
                       SizedBox(
@@ -383,7 +362,7 @@ Future<void> _getDocuments() async {
                         alignment: Alignment.topCenter,
                         child: Container(
                           height: MediaQuery.of(context).size.height * 0.5,
-                          width: MediaQuery.of(context).size.width * 0.8,
+                          width: MediaQuery.of(context).size.width * 0.9,
                           child: DottedBorder(
                             borderType: BorderType.RRect,
                             radius: Radius.circular(12),
@@ -530,10 +509,223 @@ Future<void> _getDocuments() async {
   }
 }
 
-// class MyViewController: UIViewController, WalletConnectClientDelegate {
-    
-//     override func viewDidLoad() {
-//         super.viewDidLoad()
-//         client.delegate = self
-//     }
-// }
+class CustomDialog extends StatefulWidget {
+  @override
+  _CustomDialogState createState() => _CustomDialogState();
+}
+
+class _CustomDialogState extends State<CustomDialog> {
+  List<bool> _isChecked = [false, false];
+  bool canUpload = false;
+  List<String> _texts = [
+    "0xBA68..983c0-Account1",
+    "0x7Aef...d2e7c-Account2.",
+  ];
+  
+   Widget judul(String textJudul){
+    return Text(
+                '$textJudul',
+                style: TextStyle(
+                          fontSize: 18.0,
+                          fontFamily: 'Roboto',
+                          color: Color(0xFF212121),
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: -1.0, 
+                        ),
+            );
+  }
+
+   Widget subJudul(String textSubjudul){
+    return Text(
+          '$textSubjudul', 
+          style:TextStyle(
+                        letterSpacing: -1.0, 
+                    ),
+        );
+  }
+
+  Widget divider(){
+    return  Container(
+          color: Colors.black,
+          height: 1.5,
+          width: MediaQuery.of(context).size.width,
+          );
+  }
+
+  Widget buttonReProve(String textButton, bool isFromReject){
+    return 
+        InkWell(
+          onTap: (){
+                (canUpload == true)
+                    ?
+                      Navigator.pop(context)
+                    :
+                      Navigator.pop(context);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                           color: (isFromReject == true && isFromReject != null) ? Colors.red : (canUpload == true) ? Colors.green : Colors.grey[600]!.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+              width: 100,
+              height: 50,
+              alignment: Alignment.center,
+              child: Text('$textButton')
+            ),
+        );
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Row(
+             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(),
+                  Text('Session Proposal'),
+                  InkWell(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Text('X')
+                  ),
+                ],
+              ),
+      shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+      content: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+           mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(8.0),
+                  children: [
+                    
+
+    Container(
+      height: 70,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+      
+            Container(
+              margin: EdgeInsets.all(10),
+              child: Image(image: AssetImage('assets/ethImage.png'),)
+            ),
+      
+            Container(
+              width: MediaQuery.of(context).size.width * 0.45,
+              padding: EdgeInsets.only(top: 15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                
+                 judul("React App"),         
+                  Flexible(
+                    child: Container(
+                      padding:  EdgeInsets.only(right: 13.0),
+                      child: Text(
+                              'https://react-app.walletconnect.com/',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  letterSpacing: -1.0, 
+                              ),
+                        ),
+                    ), 
+                  ),
+                        
+                ],
+              ),
+            ),  
+      
+        ],
+      ),
+    ),
+
+    divider(),
+    SizedBox(height: 20),
+     judul('Blockchains(s)'),
+     subJudul('Ethereum Kovan'),
+    SizedBox(height: 20),
+
+    divider(),
+    SizedBox(height: 20),
+     judul('Relay Protocol'),
+     subJudul('waku'),
+    SizedBox(height: 20),
+
+    divider(),
+    SizedBox(height: 20),
+     judul('Methods'),
+     subJudul('eth_sendTransaction,eth_signTransaction,eth_sign,personal_sign, eth_signTypedData'),
+    SizedBox(height: 20),
+
+    divider(),
+    SizedBox(height: 20),
+     judul('Select Ethereum Kovan Accounts'),
+    SizedBox(height: 20),
+
+    ListView.builder(
+      shrinkWrap: true,
+      itemCount: _texts.length,
+      itemBuilder: (_, index) {
+
+        return Container(
+          margin: EdgeInsets.only(bottom: 10),
+          decoration: BoxDecoration( 
+                       borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                       color: Colors.grey[350],
+                      ),
+          
+          child: CheckboxListTile(
+            controlAffinity: ListTileControlAffinity.leading,
+            title: Text(_texts[index], textAlign: TextAlign.right,),
+            value: _isChecked[index],
+            onChanged: (bool? val) {
+
+              setState(() {
+                _isChecked[index] = val!;
+                // canUpload = true;
+
+                if(val == true ){
+                  canUpload = true;
+                }else{
+                  canUpload = false;
+                }
+
+                // for (var item in _isChecked) {
+                //   if (item == false) {
+                //     canUpload = false;
+                //   }
+                // }
+              });
+            },
+          ),
+        );
+      },
+    ),
+
+                  ]),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+
+      buttonReProve("Reject", true),
+      buttonReProve("Approve", false),
+
+      ],
+    );
+  }
+}

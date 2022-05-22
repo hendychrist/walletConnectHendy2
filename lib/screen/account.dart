@@ -15,6 +15,8 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
   String dropdownValue = 'Account 1';
+  bool isCopied = false;
+  var showLoading = false;
 
   final List<ItemModel> list1 = [
     ItemModel(coinName: "Ethereum", coinAddress: "0x8796eA4A6b9857263ad3aBa971A17903B5825741", coinImage: AssetImage('assets/ethImage.png')),
@@ -43,8 +45,38 @@ class _AccountScreenState extends State<AccountScreen> {
 
   void refresh(){
     setState(() {
-      
+      showLoading = !showLoading;
     });
+    Future.delayed(Duration(seconds: 3), () {
+        if (mounted) {
+          setState(() {
+            showLoading = !showLoading;
+          });
+        }
+      });
+  }
+
+  Widget myCopiedWidget(){
+      return Container(
+          margin: EdgeInsets.only(right: 10),
+          child: Padding(
+            padding: EdgeInsets.all(2),
+            child: Text('Copied')
+            ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(width: 1, color: Colors.white),
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+          ),
+        );
+  }
+   
+  Widget myIconButton() {
+      if (!showLoading) {
+        return Container();
+      } else {
+        return myCopiedWidget();
+      }
   }
 
   @override
@@ -160,6 +192,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     coinSubImage: item.coinImage,
                     warna: colors[index],
                     onSetState: refresh,
+                    iconButton: myIconButton(),
                   );
                 }
               ),
@@ -181,28 +214,28 @@ class ListContainer extends StatelessWidget {
   final AssetImage coinSubImage;
   final Color warna;
   final void Function() onSetState;
+  final Widget iconButton;
 
-  ListContainer({required this.onSetState,required this.coinSubName, required this.coinSubAddress, required this.coinSubImage, required this.warna});
+  ListContainer({required this.onSetState,required this.coinSubName, required this.coinSubAddress, required this.coinSubImage, required this.warna, required this.iconButton});
   final _key = GlobalKey<ScaffoldState>();
 
-  bool isCopied = false;
 
   Widget copyWidget(String alamatCoin){
     return InkWell(
       onTap: (){
         onSetState();
-        isCopied = true;
-
-        debugPrint('Hendie - was Preesed isCopied : $isCopied');
-        
         Clipboard.setData(ClipboardData(text: "$alamatCoin"));
       },
       child: Container(
-                  width: 50,
-                  height: 50,
-                    child: Icon(Icons.copy, color: Colors.white,),
+                  width: 30,
+                  height: 30,
+                    child: Icon(
+                              Icons.copy, 
+                              color: Colors.white,
+                              size: 20,
+                            ),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(10),
                       // color: Color.fromARGB(255, 184, 184, 184),
                       boxShadow: [
                         BoxShadow(color: Color.fromRGBO(227, 226, 225, 0.4), spreadRadius: 3),
@@ -269,19 +302,7 @@ class ListContainer extends StatelessWidget {
               ),
             ),  
 
-
-          if(isCopied == true)
-            Container(
-              child: Padding(
-                padding: EdgeInsets.all(2),
-                child: Text('Copied')
-                ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(width: 1, color: Colors.white),
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-              ),
-            ),
+            iconButton,
 
             Flexible(
               child: Container(
@@ -290,7 +311,6 @@ class ListContainer extends StatelessWidget {
                 child: copyWidget(coinSubAddress),
               ),
             ),
-
 
         ],
       ),
