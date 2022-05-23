@@ -10,7 +10,7 @@
 <!-- ABOUT THE PROJECT -->
 ## Wallet Connect V2
 
-Hallo nama saya Hendy Christian. Di assigment tersebut saya berhasil membuat UI beberapa halaman tetapi tidak berhasil untuk konek dengan native kotlin menggunakan Channel Method karena hal tersebut termasuk baru bagi saya dan perlu waktu untuk melakukan explore lebih lanjut. 
+Hallo nama saya Hendy Christian. Di assigment tersebut saya berhasil membuat UI beberapa halaman tetapi tidak berhasil untuk connect dengan native kotlin menggunakan Channel Method karena hal tersebut termasuk baru bagi saya dan perlu waktu untuk melakukan explore lebih lanjut. 
 
 Biasanya pada project yang saya handle  menggunakan method GET and POST dengan url yang langsung direct ke API. Sehingga me return data JSON dan mengconvert ke tampilan menggunakan json decode. 
 
