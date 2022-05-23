@@ -230,12 +230,12 @@ Future<void> _getDocuments() async {
   }
   */
 
-  showConfirmationDialog(BuildContext context) {
+ showConfirmationDialog(BuildContext context) {
     return showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return CustomDialog();
+        return CustomDialog(isFromSession: false,);
       },
     );
    }
@@ -407,7 +407,8 @@ Future<void> _getDocuments() async {
                                           //   height: 25,
                                           // ),
                                   
-                                        Text('$_batteryLevel'),         
+                                        // Text('$_batteryLevel'),         
+                                        
                                       ],
                                     ),
                                   ),
@@ -510,6 +511,10 @@ Future<void> _getDocuments() async {
 }
 
 class CustomDialog extends StatefulWidget {
+  final bool isFromSession;
+
+  CustomDialog({this.isFromSession = false});
+
   @override
   _CustomDialogState createState() => _CustomDialogState();
 }
@@ -517,6 +522,7 @@ class CustomDialog extends StatefulWidget {
 class _CustomDialogState extends State<CustomDialog> {
   List<bool> _isChecked = [false, false];
   bool canUpload = false;
+
   List<String> _texts = [
     "0xBA68..983c0-Account1",
     "0x7Aef...d2e7c-Account2.",
@@ -578,12 +584,183 @@ class _CustomDialogState extends State<CustomDialog> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Hendie - isFromSession : ${widget.isFromSession}');
+
+  Widget isFromSessionFlase(){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+
+      divider(),
+    SizedBox(height: 20),
+    judul('Blockchains(s)'),
+    subJudul('Ethereum Kovan'),
+    SizedBox(height: 20),
+
+    divider(),
+    SizedBox(height: 20),
+    judul('Relay Protocol'),
+    subJudul('waku'),
+    SizedBox(height: 20),
+
+    divider(),
+    SizedBox(height: 20),
+     judul('Methods'),
+     subJudul('eth_sendTransaction,eth_signTransaction,eth_sign,personal_sign, eth_signTypedData'),
+    SizedBox(height: 20),
+
+    divider(),
+    SizedBox(height: 20),
+     judul((widget.isFromSession == true) ? 'Ehereum Kovan Accounts' : 'Select Ethereum Kovan Accounts'),
+    SizedBox(height: 20),
+
+    Container(
+      // color: Colors.pink,
+      height: 150,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: _texts.length,
+        itemBuilder: (_, index) {
+    
+          return Container(
+            margin: EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration( 
+                         borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                         color: Colors.grey[350],
+                        ),
+            
+            child: CheckboxListTile(
+              controlAffinity: ListTileControlAffinity.leading,
+              title: Text(_texts[index], textAlign: TextAlign.right,),
+              value: _isChecked[index],
+              onChanged: (bool? val) {
+    
+                setState(() {
+                  _isChecked[index] = val!;
+                  // canUpload = true;
+    
+                  if(val == true ){
+                    canUpload = true;
+                  }else{
+                    canUpload = false;
+                  }
+    
+                  // for (var item in _isChecked) {
+                  //   if (item == false) {
+                  //     canUpload = false;
+                  //   }
+                  // }
+                });
+              },
+            ),
+          );
+        },
+      ),
+    ),
+
+
+      ],
+    );
+  }
+
+
+  Widget isFromSessionTrue(){
+    return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+    
+          divider(),
+          SizedBox(height: 20),
+          judul((widget.isFromSession == true) ? 'Ehereum Kovan Accounts' : 'Select Ethereum Kovan Accounts'),
+          SizedBox(height: 20),
+
+          Container(
+            // color: Colors.pink,
+            height: 150,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: _texts.length,
+              itemBuilder: (_, index) {
+          
+                return Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration( 
+                              borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                              color: Colors.grey[350],
+                              ),
+                  
+                  child: CheckboxListTile(
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: Text(_texts[index], textAlign: TextAlign.right,),
+                    value: _isChecked[index],
+                    onChanged: (bool? val) {
+          
+                      setState(() {
+                        _isChecked[index] = val!;
+                        // canUpload = true;
+          
+                        if(val == true ){
+                          canUpload = true;
+                        }else{
+                          canUpload = false;
+                        }
+          
+                        // for (var item in _isChecked) {
+                        //   if (item == false) {
+                        //     canUpload = false;
+                        //   }
+                        // }
+                      });
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+
+          divider(),
+          SizedBox(height: 20),
+          judul('Methods'),
+          subJudul('eth_sendTransaction,eth_signTransaction,eth_sign,personal_sign, eth_signTypedData'),
+          SizedBox(height: 20),
+
+          divider(),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+            judul('Expiry'),
+            subJudul('Fri May 27 2022')
+
+            ],
+          ),
+          SizedBox(height: 20),
+          divider(),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+            judul('Last Updated'),
+            subJudul('Mon May 23 2022')
+
+            ],
+          ),
+          SizedBox(height: 20),
+          divider(),
+      ],
+    );
+  }
+
     return AlertDialog(
       title: Row(
              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(),
-                  Text('Session Proposal'),
+                  Text((widget.isFromSession == true) ? 'Session Detail' : 'Session Proposal'),
                   InkWell(
                     onTap: (){
                       Navigator.pop(context);
@@ -592,13 +769,12 @@ class _CustomDialogState extends State<CustomDialog> {
                   ),
                 ],
               ),
-      shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
       content: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Column(
-           mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -610,6 +786,7 @@ class _CustomDialogState extends State<CustomDialog> {
                     
 
     Container(
+      // color: Colors.cyan,
       height: 70,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -618,20 +795,20 @@ class _CustomDialogState extends State<CustomDialog> {
       
             Container(
               margin: EdgeInsets.all(10),
-              child: Image(image: AssetImage('assets/ethImage.png'),)
+              child: Image(image: AssetImage('assets/walletImage.png'),)
             ),
       
-            Container(
-              width: MediaQuery.of(context).size.width * 0.45,
-              padding: EdgeInsets.only(top: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                
-                 judul("React App"),         
-                  Flexible(
-                    child: Container(
+            Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.45,
+                padding: EdgeInsets.only(top: 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  
+                   judul("React App"),         
+                    Container(
                       padding:  EdgeInsets.only(right: 13.0),
                       child: Text(
                               'https://react-app.walletconnect.com/',
@@ -641,89 +818,50 @@ class _CustomDialogState extends State<CustomDialog> {
                                   letterSpacing: -1.0, 
                               ),
                         ),
-                    ), 
-                  ),
-                        
-                ],
+                    ),
+                          
+                  ],
+                ),
               ),
             ),  
       
         ],
       ),
     ),
+  
+     if(widget.isFromSession == false) isFromSessionFlase(),
+     if(widget.isFromSession == true) isFromSessionTrue(),
 
-    divider(),
-    SizedBox(height: 20),
-     judul('Blockchains(s)'),
-     subJudul('Ethereum Kovan'),
-    SizedBox(height: 20),
-
-    divider(),
-    SizedBox(height: 20),
-     judul('Relay Protocol'),
-     subJudul('waku'),
-    SizedBox(height: 20),
-
-    divider(),
-    SizedBox(height: 20),
-     judul('Methods'),
-     subJudul('eth_sendTransaction,eth_signTransaction,eth_sign,personal_sign, eth_signTypedData'),
-    SizedBox(height: 20),
-
-    divider(),
-    SizedBox(height: 20),
-     judul('Select Ethereum Kovan Accounts'),
-    SizedBox(height: 20),
-
-    ListView.builder(
-      shrinkWrap: true,
-      itemCount: _texts.length,
-      itemBuilder: (_, index) {
-
-        return Container(
-          margin: EdgeInsets.only(bottom: 10),
-          decoration: BoxDecoration( 
-                       borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                       color: Colors.grey[350],
-                      ),
-          
-          child: CheckboxListTile(
-            controlAffinity: ListTileControlAffinity.leading,
-            title: Text(_texts[index], textAlign: TextAlign.right,),
-            value: _isChecked[index],
-            onChanged: (bool? val) {
-
-              setState(() {
-                _isChecked[index] = val!;
-                // canUpload = true;
-
-                if(val == true ){
-                  canUpload = true;
-                }else{
-                  canUpload = false;
-                }
-
-                // for (var item in _isChecked) {
-                //   if (item == false) {
-                //     canUpload = false;
-                //   }
-                // }
-              });
-            },
-          ),
-        );
-      },
+          ]),
     ),
 
-                  ]),
-            ),
+
+
           ],
         ),
       ),
       actions: <Widget>[
 
-      buttonReProve("Reject", true),
-      buttonReProve("Approve", false),
+        if(widget.isFromSession == false) buttonReProve("Reject", true),
+        if(widget.isFromSession == false) buttonReProve("Approve", false),
+         if(widget.isFromSession == true) InkWell(
+            onTap: (){
+                  (canUpload == true)
+                      ?
+                        Navigator.pop(context)
+                      :
+                        Navigator.pop(context);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                           color: Colors.red,
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                height: 50,
+                alignment: Alignment.center,
+                child: Text('Delete Session',style: TextStyle(color: Colors.white),)
+              ),
+          ),
 
       ],
     );
