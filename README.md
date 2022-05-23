@@ -21,7 +21,7 @@ Dibawah ini beberapa plugin yang saya gunakan :
 
   
  
-  Sekian dan Terima Kasih. 
+ Sekian dan Terima Kasih. 
  
   
 
