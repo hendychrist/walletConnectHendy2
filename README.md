@@ -23,11 +23,6 @@ Dibawah ini beberapa plugin yang saya gunakan :
  
  Sekian dan Terima Kasih. 
  
-  
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 
 
