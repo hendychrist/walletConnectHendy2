@@ -16,8 +16,6 @@ Biasanya pada project yang saya handle  menggunakan method GET and POST dengan u
 
 Dibawah ini beberapa plugin yang saya gunakan : 
 * material_design_icons_flutter: ^5.0.6595
-* web3dart: ^2.3.0
-* hovering: ^1.0.4
 * dotted_border: ^2.0.0+2
 * qr_code_scanner: ^0.7.0
 
